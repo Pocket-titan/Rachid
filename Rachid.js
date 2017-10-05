@@ -6,6 +6,8 @@ const token = 'MzY1MTA3OTk0MDMzMjU4NDk2.DLZg-w.XjW16JqgjvTaumV7Bb1q1_h2LDY'
 let channels = null
 let currentVoiceChannel = null
 
+const botsChannelID = '281062127928868864'
+
 const send = (message, channel) => {
   channel.send(message)
     .then(message => console.log(`Sent message: ${message.content}`))
@@ -36,6 +38,9 @@ client.on('message', msg => {
   // trigger handling
   triggers.forEach(trigger => {
     if (msg.content.toLowerCase().includes(trigger.q.toLowerCase())) {
+      if (msg.author.bot) {
+        return
+      }
       if (trigger.q.type === 'text') {
         trigger.a(msg.channel)
       }
@@ -100,7 +105,9 @@ const triggers = [
   {
     q: 'rachid ga weg',
     a: voiceChannel => {
-      voiceChannel.leave()
+      if (voiceChannel) {
+          voiceChannel.leave()
+      }
     },
     type: 'voice',
   }
