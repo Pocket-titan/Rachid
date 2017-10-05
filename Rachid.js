@@ -25,8 +25,10 @@ const send = (message, channel) => {
 const playFile = (voiceChannel, filename) => {
   voiceChannel.join()
     .then(connection => {
-      const dispatcher = connection.playFile(filename)
+      const dispatcher = connection.playFile('./mp3/' + filename)
+      console.log(filename)
       dispatcher.on('end', () => {
+        console.log('we done')
         dispatcher.destroy()
       })
     })
@@ -78,7 +80,7 @@ client.on('message', msg => {
         trigger.a(msg.channel)
       }
       else if (trigger.type === 'voice') {
-        trigger.a(findChannel(msg.author.lastMessage.member.voiceChannelID))
+        trigger.a(findChannel(msg.author.lastMessage.member.voiceChannelID), trigger.q)
       }
       else if (trigger.type === 'url') {
         trigger.a(findChannel(msg.author.lastMessage.member.voiceChannelID), match[0])
@@ -109,17 +111,17 @@ const triggers = [
   },
   {
     q: 'rachid kom',
-    a: voiceChannel => {playFile(voiceChannel, audio[this.q])},
+    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
     type: 'voice',
   },
   {
     q: 'rachid heb je even voor mij',
-    a: voiceChannel => {playFile(voiceChannel, audio[this.q])},
+    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
     type: 'voice',
   },
   {
     q: 'rachid fatoe',
-    a: voiceChannel => {playFile(voiceChannel, audio[this.q])},
+    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
     type: 'voice',
   },
   {
@@ -129,12 +131,12 @@ const triggers = [
   },
   {
     q: 'rachid kanker',
-    a: voiceChannel => {playFile(voiceChannel, audio[this.q])},
+    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
     type: 'voice',
   },
   {
     q: 'rachid 5 euro',
-    a: voiceChannel => {playFile(voiceChannel, audio[this.q])},
+    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
     type: 'voice',
   },
   {
