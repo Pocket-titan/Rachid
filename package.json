@@ -1,0 +1,29 @@
+{
+  "name": "rachid",
+  "version": "1.0.0",
+  "description": "![alt text](https://github.com/Pocket-titan/Rachid/images/rachid.png \"rachid\")",
+  "main": "Rachid.js",
+  "scripts": {
+    "test": "node Rachid.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pocket-titan/Rachid.git"
+  },
+  "keywords": [
+    "discord",
+    "ik",
+    "ben",
+    "rachid"
+  ],
+  "author": "Jelmar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pocket-titan/Rachid/issues"
+  },
+  "homepage": "https://github.com/Pocket-titan/Rachid#readme",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "node-opus": "^0.2.7"
+  }
+}
