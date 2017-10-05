@@ -10,6 +10,7 @@ he is the hottest Discord bot alive
 Installation:
 - Create a new bot & add him to your server (name him Rachid and use the above profile picture) (see https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
 - Clone the repo
+- Change the variable ```token``` in ```Rachid.js``` to your own bots token
 ```
 npm install
 node Rachid.js
