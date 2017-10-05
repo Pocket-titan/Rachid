@@ -13,10 +13,9 @@ const botsChannelID = '281062127928868864'
 
 const ytdlOptions = {
   filter : 'audioonly',
-  quality: 'lowest',
-  highWaterMark: 16,
-
+  quality: 'highest',
 }
+
 const send = (message, channel) => {
   channel.send(message)
     .then(message => console.log(`Sent message: ${message.content}`))
@@ -141,20 +140,13 @@ const triggers = [
   {
     q: /^rachid (?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/,
     a: (voiceChannel, url) => {
-      let match = validateYouTubeUrl(url)
-      if (match) {playStream(voiceChannel, match)}
+      let regex = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/
+      let match = url.match(regex)
+      if (match && match[1].length == 11) {playStream(voiceChannel, match[0])}
     },
     type: 'url',
   },
 ]
-
-let validateYouTubeUrl = url => {
-    if (url != undefined || url != '') {
-        let regExp = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/
-        let match = url.match(regExp)
-        return (match && match[1].length == 11) ? match[0] : false
-    }
-}
 
 const audio = {
   'rachid kom': 'ikbenrachid.mp3',
