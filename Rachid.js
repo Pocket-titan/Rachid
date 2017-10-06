@@ -1,20 +1,15 @@
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core');
-const streamOptions = { seek: 0, volume: 1 };
 const client = new Discord.Client()
 const broadcast = client.createVoiceBroadcast();
+const search = require('youtube-search');
 
 // change this when you clone rachid
 const token = 'MzY1MTA3OTk0MDMzMjU4NDk2.DLZg-w.XjW16JqgjvTaumV7Bb1q1_h2LDY'
 
-let channels = null
-
 const botsChannelID = '281062127928868864'
 
-const ytdlOptions = {
-  filter : 'audioonly',
-  quality: 'highest',
-}
+let channels = null
 
 const send = (message, channel) => {
   channel.send(message)
@@ -22,29 +17,38 @@ const send = (message, channel) => {
     .catch(console.error)
 }
 
-const playFile = (voiceChannel, filename) => {
+const playFile = (voiceChannel, filename, user_options = {}) => {
+  const default_options = {
+    seek: 0,
+    volume: 0.7,
+    passes: 1,
+    bitrate: 48000,
+  }
+
+  const options = {
+    ...default_options,
+    ...user_options,
+  }
+
   voiceChannel.join()
     .then(connection => {
-      const dispatcher = connection.playFile('./mp3/' + filename)
-      console.log(filename)
-      dispatcher.on('end', () => {
-        console.log('we done')
-        dispatcher.destroy()
-      })
+      const dispatcher = connection.playFile(`./mp3/${filename}`, options)
+      dispatcher.on('end', () => dispatcher.destroy())
     })
     .catch(console.error)
 }
 
 const playStream = (voiceChannel, link) => {
+  const ytdlOptions = {
+    filter : 'audioonly',
+    quality: 'highest',
+  }
   voiceChannel.join()
     .then(connection => {
       const stream = ytdl(link, ytdlOptions)
         .on('error', err => console.log(err))
       const dispatcher = connection.playStream(stream)
-      dispatcher.on('end', () => {
-        console.log('we done')
-        dispatcher.destroy()
-      })
+      dispatcher.on('end', () => dispatcher.destroy())
     })
     .catch(console.error)
 }
@@ -59,32 +63,28 @@ client.on('ready', () => {
 })
 
 client.on('message', msg => {
-  const emoji = name => {
-      return msg.guild.emojis.find("name", name);
-  }
+  const emoji = name => msg.guild.emojis.find("name", name)
 
   // trigger handling
   triggers.forEach(trigger => {
-    let type = typeof trigger.q
     // string or regex matching
-    match = (type === 'string')
+    match = (typeof trigger.q === 'string')
       ? msg.content.toLowerCase().match(trigger.q.toLowerCase())
       : msg.content.match(trigger.q)
 
     // if we match shit
     if (match && match[0].length > 2) {
-      if (msg.author.bot) {
-        return
-      }
-      if (trigger.q.type === 'text') {
-        trigger.a(msg.channel)
-      }
-      else if (trigger.type === 'voice') {
-        trigger.a(findChannel(msg.author.lastMessage.member.voiceChannelID), trigger.q)
-      }
-      else if (trigger.type === 'url') {
-        trigger.a(findChannel(msg.author.lastMessage.member.voiceChannelID), match[0])
-      }
+      // don't listen to bots
+      if (msg.author.bot) return
+
+      const voiceChannel = msg.author.lastMessage.member.voiceChannelID
+        ? findChannel(msg.author.lastMessage.member.voiceChannelID)
+        : null
+      // there's different trigger types
+      if (trigger.type === 'text') trigger.a(msg.channel)
+      else if (trigger.type === 'voice') trigger.a(voiceChannel, trigger.q)
+      else if (trigger.type === 'url') trigger.a(voiceChannel, match[0])
+      else if (trigger.type === 'search') trigger.a(voiceChannel, match['input'])
     }
   })
 })
@@ -101,27 +101,27 @@ stdin.addListener("data", d => {
 const triggers = [
   {
     q: 'why are we still here',
-    a: channel => {send('just to suffer?', channel)},
+    a: channel => send('just to suffer?', channel),
     type: 'text',
   },
   {
     q: 'rachid wie ben je',
-    a: channel => {send('ik ben rachid', channel)},
+    a: channel => send('ik ben rachid', channel),
     type: 'text',
   },
   {
     q: 'rachid kom',
-    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
+    a: (voiceChannel, q) => playFile(voiceChannel, audio[q], {seek: 51}),
     type: 'voice',
   },
   {
     q: 'rachid heb je even voor mij',
-    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
+    a: (voiceChannel, q) => playFile(voiceChannel, audio[q]),
     type: 'voice',
   },
   {
     q: 'rachid fatoe',
-    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
+    a: (voiceChannel, q) => playFile(voiceChannel, audio[q]),
     type: 'voice',
   },
   {
@@ -131,12 +131,12 @@ const triggers = [
   },
   {
     q: 'rachid kanker',
-    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
+    a: (voiceChannel, q) => playFile(voiceChannel, audio[q]),
     type: 'voice',
   },
   {
     q: 'rachid 5 euro',
-    a: (voiceChannel, q) => {playFile(voiceChannel, audio[q])},
+    a: (voiceChannel, q) => playFile(voiceChannel, audio[q]),
     type: 'voice',
   },
   {
@@ -144,10 +144,27 @@ const triggers = [
     a: (voiceChannel, url) => {
       let regex = /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/
       let match = url.match(regex)
-      if (match && match[1].length == 11) {playStream(voiceChannel, match[0])}
+      if (match && match[1].length == 11) playStream(voiceChannel, match[0])
     },
     type: 'url',
   },
+  {
+    q: /^rachid play .*/,
+    a: (voiceChannel, query) => {
+      const options = {
+        maxResults: 5,
+        key: 'AIzaSyC3Elc6_IGRN3p1ee-Uk13NpQ9on9RnLpY',
+      }
+      search(query.replace('rachid play', '').trim(), options, (err, results) => {
+        if (err) return console.log(err)
+        playStream(
+          voiceChannel,
+          results.filter(result => result.kind === 'youtube#video')[0].link
+        )
+      })
+    },
+    type: 'search',
+  }
 ]
 
 const audio = {

@@ -25,6 +25,7 @@
   "dependencies": {
     "discord.js": "^11.2.1",
     "node-opus": "^0.2.7",
+    "youtube-search": "^1.0.10",
     "ytdl-core": "^0.17.1"
   }
 }
