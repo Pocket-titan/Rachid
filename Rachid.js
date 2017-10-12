@@ -56,7 +56,7 @@ const playStream = async (voice_channel, link, user_options = {}) => {
     ...default_ytdl_options,
     ...user_options,
   }
-  const stream = ytdl(link, ytdlOptions).on("error", err => console.log(err))
+  const stream = ytdl(link, ytdl_options).on("error", err => console.log(err))
   const dispatcher = (await join_channel(voice_channel)).playStream(stream)
 }
 
@@ -77,7 +77,6 @@ client.on("message", async msg => {
         typeof trigger.q === "string"
           ? msg.content.toLowerCase().match(trigger.q.toLowerCase())
           : msg.content.match(trigger.q)
-
       // if we match shit
       if (match && match[0].length > 2) {
         // don't listen to bots
