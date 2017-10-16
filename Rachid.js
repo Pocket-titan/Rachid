@@ -160,6 +160,11 @@ const triggers = [
     type: "voice",
   },
   {
+    q: "rachid bolt",
+    a: (voice_channel, q) => playFile(voice_channel, audio[q]),
+    type: "voice",
+  },
+  {
     q: "rachid 5 euro",
     a: (voice_channel, q) => playFile(voice_channel, audio[q]),
     type: "voice",
@@ -211,6 +216,7 @@ const audio = {
   "rachid fatoe": "fatoe.mp3",
   "rachid kanker": "kanker.mp3",
   "rachid 5 euro": "5euro.mp3",
+  "rachid bolt": "bolt.mp3",
 }
 
 client.login(token)
