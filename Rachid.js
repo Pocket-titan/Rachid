@@ -131,17 +131,17 @@ const triggers = [
   },
   {
     q: "rachid kom",
-    a: (voice_channel, q) => playFile(voice_channel, audio[q], { seek: 51 }),
+    a: (voice_channel, q) => playFile(voice_channel, "ikbenrachid.mp3", { seek: 51 }),
     type: "voice",
   },
   {
     q: "rachid heb je even voor mij",
-    a: (voice_channel, q) => playFile(voice_channel, audio[q]),
+    a: (voice_channel, q) => playFile(voice_channel, "hebjeevenvoormij.mp3"),
     type: "voice",
   },
   {
     q: "rachid fatoe",
-    a: (voice_channel, q) => playFile(voice_channel, audio[q]),
+    a: (voice_channel, q) => playFile(voice_channel, "fatoe.mp3"),
     type: "voice",
   },
   {
@@ -156,17 +156,22 @@ const triggers = [
   },
   {
     q: "rachid kanker",
-    a: (voice_channel, q) => playFile(voice_channel, audio[q]),
+    a: (voice_channel, q) => playFile(voice_channel, "kanker.mp3"),
+    type: "voice",
+  },
+  {
+    q: "rachid kankerheet",
+    a: (voice_channel, q) => playFile(voice_channel, "kankerheet.mp3"),
     type: "voice",
   },
   {
     q: "rachid bolt",
-    a: (voice_channel, q) => playFile(voice_channel, audio[q]),
+    a: (voice_channel, q) => playFile(voice_channel, "bolt.mp3"),
     type: "voice",
   },
   {
     q: "rachid 5 euro",
-    a: (voice_channel, q) => playFile(voice_channel, audio[q]),
+    a: (voice_channel, q) => playFile(voice_channel, "5euro.mp3"),
     type: "voice",
   },
   {
@@ -209,15 +214,5 @@ const triggers = [
     type: "voice",
   },
 ]
-
-const audio = {
-  "rachid kom": "ikbenrachid.mp3",
-  "rachid heb je even voor mij": "hebjeevenvoormij.mp3",
-  "rachid fatoe": "fatoe.mp3",
-  "rachid kanker": "kanker.mp3",
-  "rachid 5 euro": "5euro.mp3",
-  "rachid bolt": "bolt.mp3",
-  "rachid kankerheet": "kankerheet.mp3",
-}
 
 client.login(token)
