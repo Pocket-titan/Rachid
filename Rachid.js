@@ -217,6 +217,7 @@ const audio = {
   "rachid kanker": "kanker.mp3",
   "rachid 5 euro": "5euro.mp3",
   "rachid bolt": "bolt.mp3",
+  "rachid kankerheet": "kankerheet.mp3",
 }
 
 client.login(token)
