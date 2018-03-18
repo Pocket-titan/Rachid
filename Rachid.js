@@ -77,9 +77,16 @@ client.on("ready", () => {
   channels = Array.from(client.channels.values())
 })
 
+// let array = [1, 2, 3]
+// const [first, second, ...rest] = array
+// // first = 1
+// // second = 2
+// // rest = [3]
+// // array = [1, 2, 3]
+
 client.on("message", async msg => {
+  const emoji = name => msg.guild.emojis.find("name", name)
   try {
-    const emoji = name => msg.guild.emojis.find("name", name)
     // trigger handling
     for (let trigger of triggers) {
       // string or regex matching
@@ -201,6 +208,26 @@ const triggers = [
   {
     q: "rachid 5 euro",
     a: (voice_channel, q) => playFile(voice_channel, "5euro.mp3"),
+    type: "voice",
+  },
+  {
+    q: "rachid bitonnect",
+    a: (voice_channel, q) => playFile(voice_channel, "bitconnect.mp3"),
+    type: "voice",
+  },
+  {
+    q: "rachid hey",
+    a: (voice_channel, q) => playFile(voice_channel, "hey.mp3"),
+    type: "voice",
+  },
+  {
+    q: "rachid wusup",
+    a: (voice_channel, q) => playFile(voice_channel, "wusup.mp3"),
+    type: "voice",
+  },
+  {
+    q: "rachid nonono",
+    a: (voice_channel, q) => playFile(voice_channel, "nonono.mp3"),
     type: "voice",
   },
   {
