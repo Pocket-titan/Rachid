@@ -211,7 +211,7 @@ const triggers = [
     type: "voice",
   },
   {
-    q: "rachid bitonnect",
+    q: "rachid bitconnect",
     a: (voice_channel, q) => playFile(voice_channel, "bitconnect.mp3"),
     type: "voice",
   },
