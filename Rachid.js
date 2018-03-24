@@ -216,6 +216,11 @@ const triggers = [
     type: "voice",
   },
   {
+    q: "rachid sonata",
+    a: (voice_channel, q) => playFile(voice_channel, "bitonnect_sonata.mp3"),
+    type: "voice",
+  },
+  {
     q: "rachid hey",
     a: (voice_channel, q) => playFile(voice_channel, "hey.mp3"),
     type: "voice",
