@@ -4,7 +4,7 @@
   "description": "![alt text](https://github.com/Pocket-titan/Rachid/images/rachid.png \"rachid\")",
   "main": "Rachid.js",
   "scripts": {
-    "test": "node Rachid.js"
+    "start": "npx babel-node rachid.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,17 @@
   },
   "homepage": "https://github.com/Pocket-titan/Rachid#readme",
   "dependencies": {
-    "discord.js": "^11.2.1",
-    "ffmpeg-binaries": "^3.2.2-3",
-    "node-opus": "^0.2.7",
-    "youtube-search": "^1.0.10",
+    "discord.js": "^11.6.4",
+    "ffmpeg-binaries": "^3.2.2",
+    "ffmpeg-static": "^4.1.0",
+    "node-opus": "^0.3.3",
+    "sodium": "^3.0.2",
+    "youtube-search": "^1.1.4",
     "ytdl-core": "^0.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5"
   }
 }
